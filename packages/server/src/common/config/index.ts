@@ -1,4 +1,4 @@
-import { DatabaseConfig } from './interfaces/config';
+import { AuthConfig, DatabaseConfig } from './interfaces/config';
 
 export const databaseConfig: DatabaseConfig = {
   typeorm: {
@@ -8,5 +8,11 @@ export const databaseConfig: DatabaseConfig = {
     password: 'architect_admin',
     database: 'architect_hub',
     synchronize: true,
+  },
+};
+
+export const authConfig: AuthConfig = {
+  jwt: {
+    token: 'QB5MQx1tskc6uzw2KZ',
   },
 };
