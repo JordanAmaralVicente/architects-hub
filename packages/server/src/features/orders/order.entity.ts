@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -29,9 +30,11 @@ export class Order {
   status: OrderStatus;
 
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'client_fk' })
   client: User;
 
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'architect_fk' })
   architect?: User;
 
   @CreateDateColumn()
