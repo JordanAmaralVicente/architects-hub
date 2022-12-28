@@ -1,5 +1,7 @@
 import { OrderStatus } from 'src/common/types/order-status';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -13,6 +15,17 @@ import { User } from '../users/user.entity';
 
 @Entity('orders')
 export class Order {
+  @BeforeInsert()
+  setCreatedAtDate(): void {
+    this.createdAt = new Date();
+  }
+
+  @BeforeUpdate()
+  @BeforeInsert()
+  setUpdatedAtDate(): void {
+    this.updatedAt = new Date();
+  }
+
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
