@@ -1,11 +1,10 @@
-name: Node.js CI
-
+name: Back-End Nest.js Pipeline
 on:
   pull_request:
-    branches: ["master", "release/*"]
+    branches: ["master", "release/server"]
 
 jobs:
-  build_server:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
