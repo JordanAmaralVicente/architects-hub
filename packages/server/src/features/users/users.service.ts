@@ -9,8 +9,8 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
+  findById(id: string) {
+    return this.usersRepository.findOneByOrFail({ id });
   }
 
   async findByEmail(email: string): Promise<User | null> {
