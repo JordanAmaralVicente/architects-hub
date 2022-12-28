@@ -26,7 +26,6 @@ export class OrdersController {
   @Post('/create')
   createOrder(@Body() createOrderDTO: CreateOrderDTO) {
     const { clientId, ...order } = createOrderDTO;
-
     return this.ordersService.createOrder(order, clientId);
   }
 
