@@ -27,6 +27,10 @@ export class OrdersService {
     return this.orderRepository.update(orderId, { status });
   }
 
+  async deleteOrder(orderId: string) {
+    return this.orderRepository.softDelete(orderId);
+  }
+
   private mountOrderObject(orderDTO: Partial<Order>, client: User) {
     const order = Object.assign(new Order(), orderDTO);
     order.client = client;

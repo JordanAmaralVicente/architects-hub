@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -36,5 +37,11 @@ export class OrdersController {
     @Body() updateOrderDTO: UpdateOrderDTO,
   ) {
     return this.ordersService.updateOrderStatus(id, updateOrderDTO.status);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
+  deleteOrder(@Param('id') id: string) {
+    return this.ordersService.deleteOrder(id);
   }
 }
