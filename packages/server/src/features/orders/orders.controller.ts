@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateOrderDTO } from './dto/create-order.dto';
+import { UpdateOrderDTO } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
 
 @Controller('/orders')
@@ -19,5 +28,14 @@ export class OrdersController {
     const { clientId, ...order } = createOrderDTO;
 
     return this.ordersService.createOrder(order, clientId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/:id')
+  updateOrderStatus(
+    @Param('id') id: string,
+    @Body() updateOrderDTO: UpdateOrderDTO,
+  ) {
+    return this.ordersService.updateOrderStatus(id, updateOrderDTO.status);
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { OrderStatus } from 'src/common/types/order-status';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { Order } from './order.entity';
@@ -20,5 +21,9 @@ export class OrdersService {
     const order = Object.assign(new Order(), orderDTO);
     order.client = client;
     return this.orderRepository.save(order);
+  }
+
+  async updateOrderStatus(orderId: string, status: OrderStatus) {
+    return this.orderRepository.update(orderId, { status });
   }
 }
