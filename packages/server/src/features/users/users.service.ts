@@ -20,4 +20,8 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
+
+  async createUser(user: Partial<User>) {
+    return this.usersRepository.save(user);
+  }
 }
