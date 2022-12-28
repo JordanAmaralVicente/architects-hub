@@ -19,4 +19,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: npm ci
+    - run: npm install --prefix packages/server
     - run: npm run build --prefix packages/server --if-present
