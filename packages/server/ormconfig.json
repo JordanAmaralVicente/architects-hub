@@ -1,0 +1,15 @@
+{
+    "default": {
+        "type": "mysql",
+        "host": "localhost",
+        "port": 3306,
+        "username": "root",
+        "password": "architect_admin",
+        "database": "architect_hub",
+        "entities": ["dist/**/*.entity.ts"],
+        "synchronize": false,
+        "migrations": ["dist/migrations/*.ts"],
+        "migrationsTablename": "migrations",
+        "migrationRun": true
+    }
+}
