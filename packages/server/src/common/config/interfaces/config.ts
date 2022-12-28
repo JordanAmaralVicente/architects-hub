@@ -8,3 +8,9 @@ export interface DatabaseConfig {
     synchronize: boolean;
   };
 }
+
+export interface AuthConfig {
+  jwt: {
+    token: string;
+  };
+}

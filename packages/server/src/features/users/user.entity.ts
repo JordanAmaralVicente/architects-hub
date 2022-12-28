@@ -2,7 +2,7 @@ import { Gender } from 'src/common/types/gender';
 import { UserRole } from 'src/common/types/user-role';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: number;
@@ -12,6 +12,9 @@ export class User {
 
   @Column()
   email: string;
+
+  @Column()
+  password: string;
 
   @Column()
   telephone: string;

@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { User } from '../users/user.entity';
 
-@Entity()
+@Entity('orders')
 export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: number;
