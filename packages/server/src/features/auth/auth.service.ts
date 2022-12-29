@@ -28,7 +28,7 @@ export class AuthService {
     };
   }
 
-  async validateToken(token: string): Promise<Partial<User> | null> {
+  async validateToken(token: string) {
     const payload = this.jwtService.decode(token) as User;
 
     const { email } = payload;
@@ -39,6 +39,6 @@ export class AuthService {
     }
 
     const { password, ...rest } = user;
-    return rest;
+    return { user: rest };
   }
 }
