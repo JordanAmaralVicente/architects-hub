@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
+import { Autheticated, Guest } from "../components";
+
 import { ArchitectsListPage } from "../features/ArchitectsList";
 import { LoginPage } from "../features/Auth/Login";
 import { RegisterPage } from "../features/Auth/Register";
-
 import { HomePage } from "../features/Home";
 import { OrdersPage } from "../features/Orders";
 
@@ -13,18 +14,34 @@ export const router = createBrowserRouter([
   },
   {
     path: "/cadastro",
-    element: <RegisterPage />,
+    element: (
+      <Guest>
+        <RegisterPage />
+      </Guest>
+    ),
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: (
+      <Guest>
+        <LoginPage />
+      </Guest>
+    ),
   },
   {
     path: "/lista-arquitetos",
-    element: <ArchitectsListPage />,
+    element: (
+      <Autheticated>
+        <ArchitectsListPage />
+      </Autheticated>
+    ),
   },
   {
     path: "/lista-servicos",
-    element: <OrdersPage />,
+    element: (
+      <Autheticated>
+        <OrdersPage />
+      </Autheticated>
+    ),
   },
 ]);
