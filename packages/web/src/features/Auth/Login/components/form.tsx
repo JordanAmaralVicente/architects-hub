@@ -3,7 +3,7 @@ import { Box, FormControl, styled, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../../contexts/auth";
-import { LoginDTO } from "../types";
+import { LoginDTO, loginValidation } from "../types";
 
 const OuterFormContainer = styled(Box)(() => ({
   backgroundColor: "white",
@@ -26,14 +26,17 @@ export const Form = (): JSX.Element => {
   const { login } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data: LoginDTO) => {
+    setErrorMessage(null);
     setIsLoading(true);
 
     try {
+      await loginValidation.validateAsync(data);
       await login(data);
-    } catch (error) {
-      alert("something went wrong, please try it againg later");
+    } catch (error: unknown) {
+      setErrorMessage(error as string);
     }
 
     setIsLoading(false);
@@ -77,6 +80,11 @@ export const Form = (): JSX.Element => {
           Entrar
         </LoadingButton>
       </form>
+      {!!errorMessage && (
+        <Typography sx={{ color: "red", margin: "6px", fontWeight: "bold" }}>
+          {errorMessage.toString()}
+        </Typography>
+      )}
     </OuterFormContainer>
   );
 };
