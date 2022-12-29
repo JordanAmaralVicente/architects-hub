@@ -1,10 +1,11 @@
 import { AxiosError } from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { doLogin } from "./api";
+import { axiosApi } from "../../utils/axios";
+import { doLogin, verifyToken } from "./api";
 import { reducer } from "./reducer";
 import { AuthContextValue, AuthState, LoginDTO } from "./types";
 
-const initialState: AuthState = {
+const initialAuthState: AuthState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
@@ -13,19 +14,59 @@ const initialState: AuthState = {
 };
 
 const AuthContext = createContext<AuthContextValue>({
-  ...initialState,
+  ...initialAuthState,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
 });
 
 export const useAuth = (): AuthContextValue => useContext(AuthContext);
 
+const setSession = (apiAccessToken: string) => {
+  if (apiAccessToken) {
+    localStorage.setItem("apiAccessToken", apiAccessToken);
+
+    axiosApi.defaults.headers.common.authorization = `Bearer ${apiAccessToken}`;
+  } else {
+    localStorage.removeItem("apiAccessToken");
+    delete axiosApi.defaults.headers.common.authorization;
+  }
+};
+
 export function AuthProvider(props: any) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { children } = props;
+  const [state, dispatch] = useReducer(reducer, initialAuthState);
 
   useEffect(() => {
     const initialize = async (): Promise<void> => {
       try {
+        const apiAccessToken = window.localStorage.getItem("apiAccessToken");
+        const apiAuthData = await verifyToken(apiAccessToken);
+
+        if (apiAccessToken && apiAuthData) {
+          setSession(apiAccessToken);
+
+          const { user } = apiAuthData;
+
+          dispatch({
+            type: "INITIALIZE",
+            payload: {
+              isAuthenticated: true,
+              user,
+              token: apiAccessToken,
+            },
+          });
+        } else {
+          dispatch({
+            type: "INITIALIZE",
+            payload: {
+              isAuthenticated: false,
+              user: null,
+              token: null,
+            },
+          });
+        }
+      } catch (error) {
+        console.log(error);
         dispatch({
           type: "INITIALIZE",
           payload: {
@@ -34,7 +75,7 @@ export function AuthProvider(props: any) {
             token: null,
           },
         });
-      } catch (error) {}
+      }
     };
 
     initialize();
@@ -43,12 +84,13 @@ export function AuthProvider(props: any) {
   const login = async (loginDTO: LoginDTO): Promise<void> => {
     try {
       const serverResponse = await doLogin(loginDTO);
+      setSession(serverResponse.access_token);
 
       dispatch({
         type: "LOGIN",
         payload: {
-          user: serverResponse.data.user,
-          token: serverResponse.data.access_token,
+          user: serverResponse.user,
+          token: serverResponse.access_token,
         },
       });
     } catch (error: any) {
@@ -68,6 +110,7 @@ export function AuthProvider(props: any) {
   };
 
   const logout = async (): Promise<void> => {
+    setSession(null);
     dispatch({ type: "LOGOUT" });
   };
 
@@ -79,7 +122,7 @@ export function AuthProvider(props: any) {
         logout,
       }}
     >
-      {props.children}
+      {children}
     </AuthContext.Provider>
   );
 }

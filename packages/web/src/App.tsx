@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { AuthProvider } from "./contexts/auth";
 
 interface AppProps {
   children?: ReactNode;
@@ -8,7 +7,7 @@ interface AppProps {
 function App(props: AppProps) {
   const { children } = props;
 
-  return <AuthProvider>{children}</AuthProvider>;
+  return <>{children}</>;
 }
 
 export default App;
