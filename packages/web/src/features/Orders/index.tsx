@@ -1,3 +1,9 @@
+import { MountedNavbar } from "../common";
+
 export function OrdersPage(): JSX.Element {
-  return <h1>Orders Page</h1>;
+  return (
+    <>
+      <MountedNavbar/>
+    </>
+  );
 }

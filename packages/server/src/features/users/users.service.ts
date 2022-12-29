@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserRole } from 'src/common/types/user-role';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 
@@ -9,7 +10,7 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  findById(id: string) {
+  async findById(id: string) {
     return this.usersRepository.findOneByOrFail({ id });
   }
 
@@ -23,5 +24,14 @@ export class UsersService {
 
   async createUser(user: Partial<User>) {
     return this.usersRepository.save(user);
+  }
+
+  async listArchitects() {
+    return this.usersRepository.find({
+      where: {
+        userRole: UserRole.ARCHITECT,
+      },
+      select: ['id', 'email', 'name', 'telephone', 'age', 'telephone'],
+    });
   }
 }
