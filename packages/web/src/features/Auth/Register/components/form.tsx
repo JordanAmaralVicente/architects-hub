@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { Gender, Genders } from "../../../../types/gender";
 import { UserRole, UserRoles } from "../../../../types/user-role";
 import { registerUser } from "../apis/create-user";
-import { CreateUserDTO } from "../types";
+import { CreateUserDTO, createUserValidation } from "../types";
 
 const OuterFormContainer = styled(Box)(() => ({
   backgroundColor: "white",
@@ -40,15 +40,38 @@ export const Form = (): JSX.Element => {
     useForm<CreateUserDTO>();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [userRole, setUserRole] = useState<UserRole>(UserRole.CLIENT);
 
   const onSubmit = async (data: CreateUserDTO) => {
     setIsLoading(true);
+    setErrorMessage(null);
+
     const { age, ...rest } = data;
+
+    const parsedData: CreateUserDTO = {
+      age: Number(age),
+      userRole,
+      ...rest,
+    };
+
     try {
-      await registerUser({ ...rest, age: Number(age), userRole });
-    } catch (error) {
-      alert("something went wrong, please try it againg later");
+      await createUserValidation.validateAsync(parsedData);
+      await registerUser(parsedData);
+    } catch (error: any) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          setErrorMessage("Credenciais inválidas");
+        } else {
+          setErrorMessage(
+            "Algum problema aconteceu com o servidor. Tente mais tarde"
+          );
+        }
+      } else if (error.request) {
+        setErrorMessage("Não foi possível se conectar ao servidor");
+      } else {
+        setErrorMessage(error);
+      }
     }
 
     setIsLoading(false);
@@ -144,6 +167,11 @@ export const Form = (): JSX.Element => {
         >
           Cadastrar
         </LoadingButton>
+        {!!errorMessage && (
+          <Typography sx={{ color: "red", margin: "6px", fontWeight: "bold" }}>
+            {errorMessage.toString()}
+          </Typography>
+        )}
       </form>
     </OuterFormContainer>
   );
