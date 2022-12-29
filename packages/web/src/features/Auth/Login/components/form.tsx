@@ -2,7 +2,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, FormControl, styled, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { doLogin, useAuthDispatch } from "../../../../contexts/auth";
+import { useAuth } from "../../../../contexts/auth";
 import { LoginDTO } from "../types";
 
 const OuterFormContainer = styled(Box)(() => ({
@@ -23,7 +23,7 @@ const CustomTextField = styled(TextField)(() => ({
 
 export const Form = (): JSX.Element => {
   const { register, handleSubmit } = useForm<LoginDTO>();
-  const authDispatch = useAuthDispatch();
+  const { login } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,7 +31,7 @@ export const Form = (): JSX.Element => {
     setIsLoading(true);
 
     try {
-      await doLogin(authDispatch, data);
+      await login(data);
     } catch (error) {
       alert("something went wrong, please try it againg later");
     }
