@@ -1,3 +1,4 @@
+import { Assignment } from "@mui/icons-material/";
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Table } from "../../../components/Table";
@@ -12,6 +13,12 @@ export const ArchitectsTable = (): JSX.Element => {
       setArchitecs(result);
     });
   }, []);
+
+  const handleOnClickAskOrder = (rowId: string) => {
+    const architect = architects.find((value) => value.id === rowId);
+
+    console.log(architect);
+  };
 
   return (
     <Box
@@ -37,6 +44,13 @@ export const ArchitectsTable = (): JSX.Element => {
           {
             label: "Idade",
             attr: "age",
+          },
+        ]}
+        actions={[
+          {
+            actionNode: <Assignment />,
+            onClick: handleOnClickAskOrder,
+            tooltip: "Realizar uma solicitação de serviço a esse arquiteto",
           },
         ]}
       />
