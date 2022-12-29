@@ -27,4 +27,18 @@ export class AuthService {
       user,
     };
   }
+
+  async validateToken(token: string): Promise<Partial<User> | null> {
+    const payload = this.jwtService.decode(token) as User;
+
+    const { email } = payload;
+    const user = await this.usersService.findByEmail(email);
+
+    if (!user) {
+      return null;
+    }
+
+    const { password, ...rest } = user;
+    return rest;
+  }
 }
