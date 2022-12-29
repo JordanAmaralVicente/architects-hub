@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { doLogin } from "./api";
 import { reducer } from "./reducer";
@@ -40,15 +41,30 @@ export function AuthProvider(props: any) {
   }, []);
 
   const login = async (loginDTO: LoginDTO): Promise<void> => {
-    const serverResponse = await doLogin(loginDTO);
+    try {
+      const serverResponse = await doLogin(loginDTO);
 
-    dispatch({
-      type: "LOGIN",
-      payload: {
-        user: serverResponse.data.user,
-        token: serverResponse.data.access_token,
-      },
-    });
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          user: serverResponse.data.user,
+          token: serverResponse.data.access_token,
+        },
+      });
+    } catch (error: any) {
+      const parsedError = error as AxiosError;
+      if (parsedError.response) {
+        if (parsedError.response.status === 401) {
+          throw new Error("Credenciais inválidas");
+        } else {
+          throw new Error(
+            "Algum problema aconteceu com o servidor. Tente mais tarde"
+          );
+        }
+      } else if (parsedError.request) {
+        throw new Error("Não foi possível se conectar ao servidor");
+      }
+    }
   };
 
   const logout = async (): Promise<void> => {
