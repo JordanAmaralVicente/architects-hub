@@ -39,7 +39,7 @@ const statusColor = new Map<
 >([
   [OrderStatus.ACCEPTED, { backgroundColor: "#adffb1", color: "#388e3c" }],
   [OrderStatus.REFUSED, { backgroundColor: "#f5a2a2", color: "#d32f2f" }],
-  [OrderStatus.SOLICITED, { backgroundColor: "#97daf7", color: "#0288d1" }],
+  [OrderStatus.SOLICITED, { backgroundColor: "#edd4a6", color: "#e09a02" }],
 ]);
 
 export const OrderCard = (props: OrderCardProps): JSX.Element => {
@@ -97,28 +97,35 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
           {OrderStatusesMap.get(props.order.status)}
         </span>
         <Box>
-          {user.userRole === UserRole.ARCHITECT && (
-            <>
-              <Tooltip title="Aceitar" sx={{ marginRight: "8px" }}>
-                <DoneIcon
-                  color="success"
-                  onClick={() => {
-                    if (props.onClickAccept)
-                      props.onClickAccept(props.order.id);
-                  }}
-                />
-              </Tooltip>
-              <Tooltip title="Recusar">
-                <DoDisturbOnIcon
-                  color="error"
-                  onClick={() => {
-                    if (props.onClickReject)
-                      props.onClickReject(props.order.id);
-                  }}
-                />
-              </Tooltip>
-            </>
-          )}
+          {user.userRole === UserRole.ARCHITECT &&
+            props.order.status === OrderStatus.SOLICITED && (
+              <>
+                <Tooltip title="Aceitar" sx={{ marginRight: "8px" }}>
+                  <DoneIcon
+                    color="success"
+                    onClick={() => {
+                      if (props.onClickAccept)
+                        props.onClickAccept(props.order.id);
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="Recusar">
+                  <DoDisturbOnIcon
+                    color="error"
+                    onClick={() => {
+                      if (props.onClickReject)
+                        props.onClickReject(props.order.id);
+                    }}
+                  />
+                </Tooltip>
+              </>
+            )}
+          {user.userRole === UserRole.ARCHITECT &&
+            props.order.status !== OrderStatus.SOLICITED && (
+              <Typography sx={{ fontSize: "12px", opacity: 0.7 }}>
+                Respondido
+              </Typography>
+            )}
           {user.userRole === UserRole.CLIENT && (
             <>
               <Tooltip title="Editar" sx={{ marginRight: "8px" }}>

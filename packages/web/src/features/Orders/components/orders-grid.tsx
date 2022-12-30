@@ -4,7 +4,10 @@ import { OrderCard } from "../../../components/OrderCard";
 import { OrderService } from "../../../components/OrderModal";
 import { useAuth } from "../../../contexts/auth";
 import { Order } from "../../../types/order";
+import { OrderStatus } from "../../../types/order-status";
+import { deleteOrder } from "../api/delete-order";
 import { getOrders } from "../api/get-orders";
+import { updateOrder } from "../api/update-order";
 
 export const OrdersGrid = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -26,7 +29,9 @@ export const OrdersGrid = (): JSX.Element => {
     setIsModalOpen(false);
   };
 
-  const handleOnSubmitForm = async (title: string, description: string) => {};
+  const handleOnSubmitForm = async (title: string, description: string) => {
+    updateOrder(selectedOrder.id, { title, description });
+  };
 
   const handleOnClickOpenOrderCard = async (id: string) => {
     const tempOrder = orders.find((value) => value.id === id);
@@ -37,17 +42,26 @@ export const OrdersGrid = (): JSX.Element => {
   };
 
   const handleOnClickAccept = async (id: string) => {
-    setIsModalOpen(false);
+    await updateOrder(id, { status: OrderStatus.ACCEPTED });
+    fetchOrders();
   };
 
   const handleOnClickReject = async (id: string) => {
-    setIsModalOpen(false);
+    await updateOrder(id, { status: OrderStatus.REFUSED });
+    fetchOrders();
   };
 
-  const handleOnClickEdit = async (id: string) => {};
+  const handleOnClickEdit = async (id: string) => {
+    const tempOrder = orders.find((value) => value.id === id);
+
+    setSelectedOrder(tempOrder);
+    setIsModalEditable(true);
+    setIsModalOpen(true);
+  };
 
   const handleOnClickDelete = async (id: string) => {
-    setIsModalOpen(false);
+    await deleteOrder(id);
+    fetchOrders();
   };
 
   return (
