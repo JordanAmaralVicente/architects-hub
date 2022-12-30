@@ -15,6 +15,8 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: "center",
   height: "192px",
+  maxWidth: "350px",
+  width: "320px",
 
   display: "flex",
   flexDirection: "column",
@@ -82,7 +84,6 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
           position: "absolute",
           bottom: "8px",
           width: "100%",
-          maxWidth: "240px",
         }}
       >
         <span

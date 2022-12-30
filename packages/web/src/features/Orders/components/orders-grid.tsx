@@ -118,9 +118,9 @@ export const OrdersGrid = (): JSX.Element => {
           margin: "24px",
         }}
       >
-        <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 3, md: 3 }}>
+        <Grid container rowSpacing={2} spacing={3} justifyContent="center">
           {orders.map((order, idx) => (
-            <Grid key={idx} item xs={3}>
+            <Grid key={idx} item>
               <OrderCard
                 order={order}
                 onClickContent={handleOnClickOpenOrderCard}

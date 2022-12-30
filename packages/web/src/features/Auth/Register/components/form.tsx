@@ -3,7 +3,7 @@ import {
   Box,
   FormControl,
   FormControlLabel,
-  Grid,
+  FormGroup,
   MenuItem,
   Radio,
   RadioGroup,
@@ -19,7 +19,7 @@ import { UserRole, UserRoles } from "../../../../types/user-role";
 import { registerUser } from "../apis/create-user";
 import { CreateUserDTO, createUserValidation } from "../types";
 
-const OuterFormContainer = styled(Box)(() => ({
+const OuterFormContainer = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   padding: "16px",
   display: "flex",
@@ -29,6 +29,11 @@ const OuterFormContainer = styled(Box)(() => ({
   margin: "8px",
   width: "100%",
   maxWidth: "500px",
+
+  [theme.breakpoints.down("sm")]: {
+    width: "80%",
+    maxWidth: "unset",
+  },
 }));
 
 const CustomTextField = styled(TextField)(() => ({
@@ -112,27 +117,41 @@ export const Form = (): JSX.Element => {
         <FormControl>
           <CustomTextField {...register("telephone")} placeholder="Telephone" />
         </FormControl>
-        <Grid sx={{ margin: "6px", width: "100%" }}>
-          <FormControl>
-            <TextField {...register("age")} type="number" placeholder="Idade" />
-          </FormControl>
-          <FormControl sx={{ width: "50%", marginLeft: "2px" }}>
-            <Select
-              {...register("gender")}
-              value={getValues("gender")}
-              onChange={(e) => setValue("gender", e.target.value as Gender)}
-              placeholder="Gênero"
-            >
-              {Genders.map((gender, idx) => {
-                return (
-                  <MenuItem key={idx} value={gender.value}>
-                    {gender.label}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </Grid>
+        <FormGroup>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <FormControl sx={{ width: "40%" }}>
+              <TextField
+                {...register("age")}
+                type="number"
+                placeholder="Idade"
+              />
+            </FormControl>
+            <FormControl sx={{ marginLeft: "3px", width: "56%" }}>
+              <Select
+                {...register("gender")}
+                value={getValues("gender")}
+                onChange={(e) => setValue("gender", e.target.value as Gender)}
+                placeholder="Gênero"
+              >
+                {Genders.map((gender, idx) => {
+                  return (
+                    <MenuItem key={idx} value={gender.value}>
+                      {gender.label}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Box>
+        </FormGroup>
+
         <FormControl>
           <RadioGroup
             value={userRole}

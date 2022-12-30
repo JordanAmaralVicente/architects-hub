@@ -1,20 +1,26 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Modal, TextField, Typography } from "@mui/material";
+import { Box, Modal, styled, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Order } from "../../types/order";
 
-const style = {
-  position: "absolute" as "absolute",
+const StyledBox = styled(Box)(({ theme }) => ({
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
+  width: "400px",
+  backgroundColor: "white",
   border: "none",
   borderRadius: "6px",
-  boxShadow: 24,
-  p: 4,
-};
+  boxShadow: "24px",
+  padding: "24px",
+  outline: "none",
+
+  [theme.breakpoints.down("sm")]: {
+    width: "80%",
+    maxWidth: "unset",
+  },
+}));
 
 interface OrderServiceProps {
   isEditable?: boolean;
@@ -39,7 +45,7 @@ export const OrderService = (props: OrderServiceProps): JSX.Element => {
   return (
     <>
       <Modal open={props.isOpen} onClose={props.onClose}>
-        <Box sx={{ ...style, outline: "none" }}>
+        <StyledBox>
           <Box
             sx={{
               display: "flex",
@@ -80,7 +86,7 @@ export const OrderService = (props: OrderServiceProps): JSX.Element => {
               </LoadingButton>
             )}
           </Box>
-        </Box>
+        </StyledBox>
       </Modal>
     </>
   );

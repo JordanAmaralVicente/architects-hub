@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../../../contexts/auth";
 import { LoginDTO, loginValidation } from "../types";
 
-const OuterFormContainer = styled(Box)(() => ({
+const OuterFormContainer = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   padding: "16px",
   display: "flex",
@@ -15,6 +15,11 @@ const OuterFormContainer = styled(Box)(() => ({
   margin: "8px",
   width: "100%",
   maxWidth: "500px",
+
+  [theme.breakpoints.down("sm")]: {
+    width: "80%",
+    maxWidth: "unset",
+  },
 }));
 
 const CustomTextField = styled(TextField)(() => ({
