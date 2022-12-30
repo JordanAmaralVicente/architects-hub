@@ -18,6 +18,7 @@ export const EmptyResult = (props: EmptyResultProps): JSX.Element => {
         alignItems: "center",
         justifyContent: "center",
       }}
+      data-testid="empty-result-test-id"
     >
       {props.text}
       <SentimentDissatisfiedIcon sx={{ marginLeft: "8px" }} />
