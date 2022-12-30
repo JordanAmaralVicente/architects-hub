@@ -7,6 +7,7 @@ export const OuterPageContainer = styled(Box)(() => ({
   width: "100%",
   justifyContent: "center",
   alignItems: "center",
+  marginTop: "72px",
 }));
 
 export function LoginPage(): JSX.Element {
