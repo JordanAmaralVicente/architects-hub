@@ -1,6 +1,6 @@
-import { Gender } from 'src/common/types/gender';
-import { UserRole } from 'src/common/types/user-role';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Gender } from '../../common/types/gender';
+import { UserRole } from '../../common/types/user-role';
 
 @Entity('users')
 export class User {
