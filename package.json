@@ -4,18 +4,20 @@
   "description": "",
   "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-
+    
     "start:docker": "docker-compose -f docker/docker-compose.yml up --build",
-
+    
     "install:server": "npm install --prefix packages/server",
     "build:server": "npm run build --prefix packages/server",
     "start:server": "npm run start --prefix packages/server",
     "test:server": "npm run test --prefix packages/server",
-
+    
     "install:web": "npm install --prefix packages/web",
     "build:web": "npm run build --prefix packages/web",
-    "start:web": "echo \"ATENÇÃO: ACESSAR VIA localhost:3000\" && npm run build:web && npm start --prefix packages/web"
+    "start:web": "echo \"ATENÇÃO: ACESSAR VIA localhost:3000\" && npm run build:web && npm start --prefix packages/web",
+    "test:web": "npm run test --prefix packages/web",
+
+    "test": "npm run test:server && npm run test:web"
   },
   "author": "Jordan Amaral Vicente",
   "license": "ISC"
