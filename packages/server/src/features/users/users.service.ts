@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRole } from 'src/common/types/user-role';
 import { Repository } from 'typeorm';
+import { UserRole } from '../../common/types/user-role';
+import { encryptPassword } from '../../utils/bcrypt';
 import { User } from './user.entity';
 
 @Injectable()
@@ -23,7 +24,9 @@ export class UsersService {
   }
 
   async createUser(user: Partial<User>) {
-    return this.usersRepository.save(user);
+    const { password, ...rest } = user;
+    const hash = await encryptPassword(password as string);
+    return this.usersRepository.save({ ...rest, password: hash });
   }
 
   async listArchitects() {
