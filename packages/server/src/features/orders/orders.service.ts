@@ -17,9 +17,15 @@ export class OrdersService {
     return this.orderRepository.find();
   }
 
-  async createOrder(orderDTO: Partial<Order>, clientId: string) {
+  async createOrder(
+    orderDTO: Partial<Order>,
+    clientId: string,
+    architectId: string,
+  ) {
     const client = await this.userService.findById(clientId);
-    const order = this.mountOrderObject(orderDTO, client);
+    const architect = await this.userService.findById(architectId);
+
+    const order = this.mountOrderObject(orderDTO, client, architect);
     return this.orderRepository.save(order);
   }
 
@@ -31,9 +37,34 @@ export class OrdersService {
     return this.orderRepository.softDelete(orderId);
   }
 
-  private mountOrderObject(orderDTO: Partial<Order>, client: User) {
+  async getArchitectOrders(architectId: string) {
+    return this.orderRepository.find({
+      where: {
+        architect: {
+          id: architectId,
+        },
+      },
+    });
+  }
+
+  async getClientOrders(clientId: string) {
+    return this.orderRepository.find({
+      where: {
+        client: {
+          id: clientId,
+        },
+      },
+    });
+  }
+
+  private mountOrderObject(
+    orderDTO: Partial<Order>,
+    client: User,
+    architect: User,
+  ) {
     const order = Object.assign(new Order(), orderDTO);
     order.client = client;
+    order.architect = architect;
     return order;
   }
 }

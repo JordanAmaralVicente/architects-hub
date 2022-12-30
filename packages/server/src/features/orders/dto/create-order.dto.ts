@@ -9,4 +9,7 @@ export class CreateOrderDTO {
 
   @IsNotEmpty()
   clientId: string;
+
+  @IsNotEmpty()
+  architectId: string;
 }

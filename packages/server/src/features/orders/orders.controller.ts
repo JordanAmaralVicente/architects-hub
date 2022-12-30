@@ -26,8 +26,8 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard)
   @Post('/create')
   createOrder(@Body() createOrderDTO: CreateOrderDTO) {
-    const { clientId, ...order } = createOrderDTO;
-    return this.ordersService.createOrder(order, clientId);
+    const { clientId, architectId, ...order } = createOrderDTO;
+    return this.ordersService.createOrder(order, clientId, architectId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -43,5 +43,17 @@ export class OrdersController {
   @Delete('/:id')
   deleteOrder(@Param('id') id: string) {
     return this.ordersService.deleteOrder(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/architect/:id')
+  getArchitectOrders(@Param('id') id: string) {
+    return this.ordersService.getArchitectOrders(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/client/:id')
+  getClientOrders(@Param('id') id: string) {
+    return this.ordersService.getArchitectOrders(id);
   }
 }
