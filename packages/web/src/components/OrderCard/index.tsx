@@ -1,5 +1,6 @@
 import { Box, Paper, styled, Typography } from "@mui/material";
 import { Order } from "../../types/order";
+import { OrderStatusesMap } from "../../types/order-status";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "white",
@@ -46,7 +47,7 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
         {props.order.description}
       </Typography>
       <Box>
-        <Typography>{props.order.status}</Typography>
+        <Typography>{OrderStatusesMap.get(props.order.status)}</Typography>
       </Box>
     </Item>
   );
