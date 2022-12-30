@@ -58,12 +58,30 @@ export const OrdersGrid = (): JSX.Element => {
   };
 
   const handleOnClickAccept = async (id: string) => {
-    await updateOrder(id, { status: OrderStatus.ACCEPTED });
+    try {
+      await updateOrder(id, { status: OrderStatus.ACCEPTED });
+      snackbar.enqueueSnackbar("Solicitação aceita com sucesso!", {
+        variant: "success",
+      });
+    } catch (error) {
+      snackbar.enqueueSnackbar("Não foi possível completar a ação!", {
+        variant: "error",
+      });
+    }
     fetchOrders();
   };
 
   const handleOnClickReject = async (id: string) => {
-    await updateOrder(id, { status: OrderStatus.REFUSED });
+    try {
+      await updateOrder(id, { status: OrderStatus.REFUSED });
+      snackbar.enqueueSnackbar("Solicitação recusada com sucesso!", {
+        variant: "success",
+      });
+    } catch (error) {
+      snackbar.enqueueSnackbar("Não foi possível completar a ação!", {
+        variant: "error",
+      });
+    }
     fetchOrders();
   };
 
@@ -76,7 +94,16 @@ export const OrdersGrid = (): JSX.Element => {
   };
 
   const handleOnClickDelete = async (id: string) => {
-    await deleteOrder(id);
+    try {
+      await deleteOrder(id);
+      snackbar.enqueueSnackbar("Solicitação excluída com sucesso!", {
+        variant: "success",
+      });
+    } catch (error) {
+      snackbar.enqueueSnackbar("Não foi possível completar a ação!", {
+        variant: "error",
+      });
+    }
     fetchOrders();
   };
 
