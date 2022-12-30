@@ -20,4 +20,4 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run install:server
-    - run: npm run start:server
+    - run: npm run build:server
