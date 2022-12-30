@@ -1,4 +1,5 @@
 import { Box, Grid } from "@mui/material";
+import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { OrderCard } from "../../../components/OrderCard";
 import { OrderService } from "../../../components/OrderModal";
@@ -14,7 +15,9 @@ export const OrdersGrid = (): JSX.Element => {
   const [isModalEditable, setIsModalEditable] = useState<boolean>(false);
   const [selectedOrder, setSelectedOrder] = useState<Order>(null);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useAuth();
+  const snackbar = useSnackbar();
 
   async function fetchOrders() {
     const result = await getOrders(user.id, user.userRole);
@@ -30,7 +33,19 @@ export const OrdersGrid = (): JSX.Element => {
   };
 
   const handleOnSubmitForm = async (title: string, description: string) => {
-    await updateOrder(selectedOrder.id, { title, description });
+    setIsLoading(true);
+    try {
+      await updateOrder(selectedOrder.id, { title, description });
+      snackbar.enqueueSnackbar("Informações atualizadas com sucesso!", {
+        variant: "success",
+      });
+    } catch (error) {
+      snackbar.enqueueSnackbar("Houve um erro ao atualizar as informações", {
+        variant: "error",
+      });
+    }
+    setIsLoading(false);
+    setIsModalOpen(false);
     fetchOrders();
   };
 
@@ -93,6 +108,8 @@ export const OrdersGrid = (): JSX.Element => {
         onClickSubmitForm={handleOnSubmitForm}
         isEditable={isModalEditable}
         order={selectedOrder}
+        isLoading={isLoading}
+        isEditing
       />
     </>
   );

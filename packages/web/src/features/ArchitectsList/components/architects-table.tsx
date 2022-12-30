@@ -15,6 +15,7 @@ export const ArchitectsTable = (): JSX.Element => {
   const [selectedArchitect, setSelectedArchitect] =
     useState<Partial<User>>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getArchitects().then((result) => {
@@ -34,12 +35,17 @@ export const ArchitectsTable = (): JSX.Element => {
   };
 
   const handleOnSubmitForm = async (title: string, description: string) => {
+    setIsLoading(true);
+
     await createServiceOrder({
       clientId: user.id,
       architectId: selectedArchitect.id,
       title,
       description,
     });
+
+    setIsLoading(false);
+    setIsModalOpen(false);
   };
 
   return (
@@ -80,6 +86,7 @@ export const ArchitectsTable = (): JSX.Element => {
       </Box>
       <OrderService
         isOpen={isModalOpen}
+        isLoading={isLoading}
         onClose={handleOnCloseModal}
         onClickSubmitForm={handleOnSubmitForm}
       />

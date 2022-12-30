@@ -23,6 +23,7 @@ interface OrderServiceProps {
   onClose: () => void;
   onClickSubmitForm?: (title: string, description: string) => void;
   order?: Order;
+  isLoading?: boolean;
 }
 
 export const OrderService = (props: OrderServiceProps): JSX.Element => {
@@ -67,6 +68,7 @@ export const OrderService = (props: OrderServiceProps): JSX.Element => {
             />
             {!!isEditable && (
               <LoadingButton
+                loading={props.isLoading}
                 variant="contained"
                 sx={{ margin: "6px" }}
                 onClick={() => {

@@ -128,13 +128,15 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
             )}
           {user.userRole === UserRole.CLIENT && (
             <>
-              <Tooltip title="Editar" sx={{ marginRight: "8px" }}>
-                <EditIcon
-                  onClick={() => {
-                    if (props.onClickEdit) props.onClickEdit(props.order.id);
-                  }}
-                />
-              </Tooltip>
+              {props.order.status !== OrderStatus.REFUSED && (
+                <Tooltip title="Editar" sx={{ marginRight: "8px" }}>
+                  <EditIcon
+                    onClick={() => {
+                      if (props.onClickEdit) props.onClickEdit(props.order.id);
+                    }}
+                  />
+                </Tooltip>
+              )}
               <Tooltip title="Deletar">
                 <DeleteIcon
                   color="error"
