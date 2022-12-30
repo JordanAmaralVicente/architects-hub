@@ -26,7 +26,11 @@ const Item = styled(Paper)(({ theme }) => ({
 
 interface OrderCardProps {
   order: Order;
-  onClick?: (id: string) => void;
+  onClickContent?: (id: string) => void;
+  onClickEdit?: (id: string) => void;
+  onClickDelete?: (id: string) => void;
+  onClickAccept?: (id: string) => void;
+  onClickReject?: (id: string) => void;
 }
 
 const statusColor = new Map<
@@ -42,31 +46,33 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
   const { user } = useAuth();
 
   return (
-    <Item
-      onClick={() => {
-        if (props.onClick) props.onClick(props.order.id);
-      }}
-    >
-      <Typography
-        sx={{
-          fontWeight: "bold",
-          fontSize: "18px",
-          margin: "8px",
+    <Item>
+      <Box
+        onClick={() => {
+          if (props.onClickContent) props.onClickContent(props.order.id);
         }}
       >
-        {props.order.title}
-      </Typography>
-      <Typography
-        sx={{
-          fontSize: "14px",
-          margin: "8px",
-          maxHeight: "64px",
-          overflowY: "hidden",
-          borderRadius: "6px",
-        }}
-      >
-        {props.order.description}
-      </Typography>
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            fontSize: "18px",
+            margin: "8px",
+          }}
+        >
+          {props.order.title}
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "14px",
+            margin: "8px",
+            maxHeight: "64px",
+            overflowY: "hidden",
+            borderRadius: "6px",
+          }}
+        >
+          {props.order.description}
+        </Typography>
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -94,20 +100,42 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
           {user.userRole === UserRole.ARCHITECT && (
             <>
               <Tooltip title="Aceitar" sx={{ marginRight: "8px" }}>
-                <DoneIcon color="success" />
+                <DoneIcon
+                  color="success"
+                  onClick={() => {
+                    if (props.onClickAccept)
+                      props.onClickAccept(props.order.id);
+                  }}
+                />
               </Tooltip>
               <Tooltip title="Recusar">
-                <DoDisturbOnIcon color="error" />
+                <DoDisturbOnIcon
+                  color="error"
+                  onClick={() => {
+                    if (props.onClickReject)
+                      props.onClickReject(props.order.id);
+                  }}
+                />
               </Tooltip>
             </>
           )}
           {user.userRole === UserRole.CLIENT && (
             <>
               <Tooltip title="Editar" sx={{ marginRight: "8px" }}>
-                <EditIcon />
+                <EditIcon
+                  onClick={() => {
+                    if (props.onClickEdit) props.onClickEdit(props.order.id);
+                  }}
+                />
               </Tooltip>
               <Tooltip title="Deletar">
-                <DeleteIcon color="error" />
+                <DeleteIcon
+                  color="error"
+                  onClick={() => {
+                    if (props.onClickDelete)
+                      props.onClickDelete(props.order.id);
+                  }}
+                />
               </Tooltip>
             </>
           )}
