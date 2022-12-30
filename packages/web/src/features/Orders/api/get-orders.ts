@@ -6,7 +6,7 @@ export async function getOrders(
   userId: string,
   userRole: UserRole
 ): Promise<Order[]> {
-  const path = userRole === UserRole.ARCHITECT ? "architect" : "user";
+  const path = userRole === UserRole.ARCHITECT ? "architect" : "client";
 
   const result = await axiosApi.get<Order[]>(`/orders/${path}/${userId}`);
 

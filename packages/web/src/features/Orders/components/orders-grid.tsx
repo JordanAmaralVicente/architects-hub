@@ -30,7 +30,8 @@ export const OrdersGrid = (): JSX.Element => {
   };
 
   const handleOnSubmitForm = async (title: string, description: string) => {
-    updateOrder(selectedOrder.id, { title, description });
+    await updateOrder(selectedOrder.id, { title, description });
+    fetchOrders();
   };
 
   const handleOnClickOpenOrderCard = async (id: string) => {
