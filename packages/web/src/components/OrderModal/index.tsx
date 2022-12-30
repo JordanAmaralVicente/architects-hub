@@ -1,6 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Modal, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Order } from "../../types/order";
 
 const style = {
   position: "absolute" as "absolute",
@@ -21,12 +22,18 @@ interface OrderServiceProps {
   isOpen: boolean;
   onClose: () => void;
   onClickSubmitForm?: (title: string, description: string) => void;
+  order?: Order;
 }
 
 export const OrderService = (props: OrderServiceProps): JSX.Element => {
   const { isEditable = true, isEditing = false } = props;
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    setTitle(props?.order?.title);
+    setDescription(props?.order?.description);
+  }, [props.order]);
 
   return (
     <>

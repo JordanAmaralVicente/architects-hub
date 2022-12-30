@@ -14,7 +14,7 @@ export const ArchitectsTable = (): JSX.Element => {
   const [architects, setArchitecs] = useState<Partial<User>[]>([]);
   const [selectedArchitect, setSelectedArchitect] =
     useState<Partial<User>>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getArchitects().then((result) => {
