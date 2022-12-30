@@ -28,6 +28,7 @@ export const MountedNavbar = () => {
         label: "Sair",
         onClick() {
           logout();
+          navigate("/");
         },
       }}
     />
