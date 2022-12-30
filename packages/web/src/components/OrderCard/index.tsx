@@ -1,13 +1,23 @@
-import { Box, Paper, styled, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
+import DoneIcon from "@mui/icons-material/Done";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, Paper, styled, Tooltip, Typography } from "@mui/material";
+import { useAuth } from "../../contexts/auth";
 import { Order } from "../../types/order";
 import { OrderStatus, OrderStatusesMap } from "../../types/order-status";
+import { UserRole } from "../../types/user-role";
 
 const Item = styled(Paper)(({ theme }) => ({
+  position: "relative",
   backgroundColor: "white",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
   height: "192px",
+
+  display: "flex",
+  flexDirection: "column",
 
   "&: hover": {
     cursor: "pointer",
@@ -29,6 +39,8 @@ const statusColor = new Map<
 ]);
 
 export const OrderCard = (props: OrderCardProps): JSX.Element => {
+  const { user } = useAuth();
+
   return (
     <Item
       onClick={() => {
@@ -55,7 +67,18 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
       >
         {props.order.description}
       </Typography>
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+          position: "absolute",
+          bottom: "8px",
+          width: "100%",
+          maxWidth: "240px",
+        }}
+      >
         <span
           style={{
             ...statusColor.get(props.order.status),
@@ -67,6 +90,28 @@ export const OrderCard = (props: OrderCardProps): JSX.Element => {
         >
           {OrderStatusesMap.get(props.order.status)}
         </span>
+        <Box>
+          {user.userRole === UserRole.ARCHITECT && (
+            <>
+              <Tooltip title="Aceitar" sx={{ marginRight: "8px" }}>
+                <DoneIcon color="success" />
+              </Tooltip>
+              <Tooltip title="Recusar">
+                <DoDisturbOnIcon color="error" />
+              </Tooltip>
+            </>
+          )}
+          {user.userRole === UserRole.CLIENT && (
+            <>
+              <Tooltip title="Editar" sx={{ marginRight: "8px" }}>
+                <EditIcon />
+              </Tooltip>
+              <Tooltip title="Deletar">
+                <DeleteIcon color="error" />
+              </Tooltip>
+            </>
+          )}
+        </Box>
       </Box>
     </Item>
   );
