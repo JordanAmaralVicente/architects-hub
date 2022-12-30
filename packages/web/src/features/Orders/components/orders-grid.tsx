@@ -1,6 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
+import { EmptyResult } from "../../../components/EmptyResult";
 import { OrderCard } from "../../../components/OrderCard";
 import { OrderService } from "../../../components/OrderModal";
 import { useAuth } from "../../../contexts/auth";
@@ -15,6 +16,7 @@ export const OrdersGrid = (): JSX.Element => {
   const [isModalEditable, setIsModalEditable] = useState<boolean>(false);
   const [selectedOrder, setSelectedOrder] = useState<Order>(null);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useAuth();
   const snackbar = useSnackbar();
@@ -25,7 +27,9 @@ export const OrdersGrid = (): JSX.Element => {
   }
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders().then(() => {
+      setIsInitialized(true);
+    });
   }, []);
 
   const handleOnCloseModal = () => {
@@ -128,6 +132,9 @@ export const OrdersGrid = (): JSX.Element => {
             </Grid>
           ))}
         </Grid>
+        {isInitialized && !orders.length && (
+          <EmptyResult text="Não foram encontradas solicitações" />
+        )}
       </Box>
       <OrderService
         isOpen={isModalOpen}

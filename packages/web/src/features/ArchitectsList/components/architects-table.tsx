@@ -2,6 +2,7 @@ import { Assignment } from "@mui/icons-material/";
 import { Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
+import { EmptyResult } from "../../../components/EmptyResult";
 import { OrderService } from "../../../components/OrderModal";
 import { Table } from "../../../components/Table";
 import { useAuth } from "../../../contexts/auth";
@@ -19,10 +20,12 @@ export const ArchitectsTable = (): JSX.Element => {
     useState<Partial<User>>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
   useEffect(() => {
     getArchitects().then((result) => {
       setArchitecs(result);
+      setIsInitialized(true);
     });
   }, []);
 
@@ -96,6 +99,9 @@ export const ArchitectsTable = (): JSX.Element => {
           ]}
           actions={user.userRole === UserRole.CLIENT ? actionsList : []}
         />
+        {isInitialized && !architects.length && (
+          <EmptyResult text="Não foram encontrados arquitetos" />
+        )}
       </Box>
       <OrderService
         isOpen={isModalOpen}
