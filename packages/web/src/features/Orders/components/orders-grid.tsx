@@ -7,6 +7,7 @@ import { OrderService } from "../../../components/OrderModal";
 import { useAuth } from "../../../contexts/auth";
 import { Order } from "../../../types/order";
 import { OrderStatus } from "../../../types/order-status";
+import { User } from "../../../types/user";
 import { deleteOrder } from "../api/delete-order";
 import { getOrders } from "../api/get-orders";
 import { updateOrder } from "../api/update-order";
@@ -21,16 +22,15 @@ export const OrdersGrid = (): JSX.Element => {
   const { user } = useAuth();
   const snackbar = useSnackbar();
 
-  async function fetchOrders() {
+  const fetchOrders = async (user: User) => {
     const result = await getOrders(user.id, user.userRole);
     setOrders(result);
-  }
+    setIsInitialized(true);
+  };
 
   useEffect(() => {
-    fetchOrders().then(() => {
-      setIsInitialized(true);
-    });
-  }, []);
+    fetchOrders(user);
+  }, [user]);
 
   const handleOnCloseModal = () => {
     setIsModalOpen(false);
@@ -50,7 +50,7 @@ export const OrdersGrid = (): JSX.Element => {
     }
     setIsLoading(false);
     setIsModalOpen(false);
-    fetchOrders();
+    fetchOrders(user);
   };
 
   const handleOnClickOpenOrderCard = async (id: string) => {
@@ -72,7 +72,7 @@ export const OrdersGrid = (): JSX.Element => {
         variant: "error",
       });
     }
-    fetchOrders();
+    fetchOrders(user);
   };
 
   const handleOnClickReject = async (id: string) => {
@@ -86,7 +86,7 @@ export const OrdersGrid = (): JSX.Element => {
         variant: "error",
       });
     }
-    fetchOrders();
+    fetchOrders(user);
   };
 
   const handleOnClickEdit = async (id: string) => {
@@ -108,7 +108,7 @@ export const OrdersGrid = (): JSX.Element => {
         variant: "error",
       });
     }
-    fetchOrders();
+    fetchOrders(user);
   };
 
   return (
