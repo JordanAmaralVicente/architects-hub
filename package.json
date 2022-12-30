@@ -11,6 +11,7 @@
     "install:server": "npm install --prefix packages/server",
     "build:server": "npm run build --prefix packages/server",
     "start:server": "npm run start --prefix packages/server",
+    "test:server": "npm run test --prefix packages/server",
 
     "install:web": "npm install --prefix packages/web",
     "build:web": "npm run build --prefix packages/web",
