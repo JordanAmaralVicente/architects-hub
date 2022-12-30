@@ -23,6 +23,7 @@ export const BannerWithImage = (props: BannerProps): JSX.Element => {
         justifyContent: "center",
         ...props.style,
       }}
+      data-testid="baner-with-image-test-id"
     >
       {props.children}
     </div>

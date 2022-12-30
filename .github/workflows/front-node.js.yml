@@ -21,3 +21,4 @@ jobs:
     - run: npm ci
     - run: npm run install:web
     - run: npm run build:web
+    - run: npm run test:web
