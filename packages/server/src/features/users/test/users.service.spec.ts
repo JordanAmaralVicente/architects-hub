@@ -3,6 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Gender } from '../../../common/types/gender';
 import { UserRole } from '../../../common/types/user-role';
+import * as bcryptUtils from '../../../utils/bcrypt';
 import { User } from '../user.entity';
 import { UsersService } from '../users.service';
 
@@ -40,6 +41,24 @@ describe('UsersService', () => {
   });
 
   describe('createUser', () => {
+    jest
+      .spyOn(bcryptUtils, 'encryptPassword')
+      .mockReturnValue(Promise.resolve('password-123'));
+
+    it('should encode a new user password', async () => {
+      await service.createUser({
+        age: 20,
+        email: 'teste@jest.com',
+        gender: Gender.MALE,
+        name: 'fake name',
+        telephone: '+55 31 99090 8080',
+        userRole: UserRole.ARCHITECT,
+        password: 'fake-password',
+      });
+
+      expect(bcryptUtils.encryptPassword).toHaveBeenCalledWith('fake-password');
+    });
+
     it('should create a new user', async () => {
       await service.createUser({
         age: 20,
@@ -49,6 +68,17 @@ describe('UsersService', () => {
         telephone: '+55 31 99090 8080',
         userRole: UserRole.ARCHITECT,
         password: 'fake-password',
+      });
+
+      expect(userRepository.save).toHaveBeenCalledTimes(1);
+      expect(userRepository.save).toHaveBeenCalledWith({
+        age: 20,
+        email: 'teste@jest.com',
+        gender: Gender.MALE,
+        name: 'fake name',
+        telephone: '+55 31 99090 8080',
+        userRole: UserRole.ARCHITECT,
+        password: 'password-123',
       });
     });
   });
