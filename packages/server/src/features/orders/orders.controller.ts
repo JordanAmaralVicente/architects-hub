@@ -32,11 +32,8 @@ export class OrdersController {
 
   @UseGuards(JwtAuthGuard)
   @Put('/:id')
-  updateOrderStatus(
-    @Param('id') id: string,
-    @Body() updateOrderDTO: UpdateOrderDTO,
-  ) {
-    return this.ordersService.updateOrderStatus(id, updateOrderDTO.status);
+  updateOrder(@Param('id') id: string, @Body() updateOrderDTO: UpdateOrderDTO) {
+    return this.ordersService.updateOrderStatus(id, updateOrderDTO);
   }
 
   @UseGuards(JwtAuthGuard)

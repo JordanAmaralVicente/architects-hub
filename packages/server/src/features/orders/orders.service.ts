@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrderStatus } from 'src/common/types/order-status';
 import { IsNull, Repository } from 'typeorm';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
@@ -29,8 +28,8 @@ export class OrdersService {
     return this.orderRepository.save(order);
   }
 
-  async updateOrderStatus(orderId: string, status: OrderStatus) {
-    return this.orderRepository.update(orderId, { status });
+  async updateOrderStatus(orderId: string, data: Partial<Order>) {
+    return this.orderRepository.update(orderId, data);
   }
 
   async deleteOrder(orderId: string) {
