@@ -28,7 +28,7 @@ export class createOrdersTable1672186198792 implements MigrationInterface {
             name: 'status',
             type: 'enum',
             enum: ['A', 'R', 'S'],
-            default: 'S',
+            default: `'S'`,
           },
           {
             name: 'client_fk',
@@ -37,7 +37,6 @@ export class createOrdersTable1672186198792 implements MigrationInterface {
           {
             name: 'architect_fk',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'createdAt',
