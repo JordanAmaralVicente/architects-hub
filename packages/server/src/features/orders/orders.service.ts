@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderStatus } from 'src/common/types/order-status';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { Order } from './order.entity';
@@ -43,6 +43,7 @@ export class OrdersService {
         architect: {
           id: architectId,
         },
+        deletedAt: IsNull(),
       },
     });
   }
@@ -53,6 +54,7 @@ export class OrdersService {
         client: {
           id: clientId,
         },
+        deletedAt: IsNull(),
       },
     });
   }

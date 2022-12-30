@@ -54,6 +54,6 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard)
   @Get('/client/:id')
   getClientOrders(@Param('id') id: string) {
-    return this.ordersService.getArchitectOrders(id);
+    return this.ordersService.getClientOrders(id);
   }
 }
