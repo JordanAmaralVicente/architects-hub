@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Gender, Genders } from "../../../../types/gender";
 import { UserRole, UserRoles } from "../../../../types/user-role";
 import { registerUser } from "../apis/create-user";
@@ -47,6 +48,7 @@ export const Form = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [userRole, setUserRole] = useState<UserRole>(UserRole.CLIENT);
+  const navigate = useNavigate();
 
   const onSubmit = async (data: CreateUserDTO) => {
     setIsLoading(true);
@@ -63,15 +65,12 @@ export const Form = (): JSX.Element => {
     try {
       await createUserValidation.validateAsync(parsedData);
       await registerUser(parsedData);
+      navigate("/login");
     } catch (error: any) {
       if (error.response) {
-        if (error.response.status === 401) {
-          setErrorMessage("Credenciais inválidas");
-        } else {
-          setErrorMessage(
-            "Algum problema aconteceu com o servidor. Tente mais tarde"
-          );
-        }
+        setErrorMessage(
+          "Algum problema aconteceu com o servidor. Tente mais tarde"
+        );
       } else if (error.request) {
         setErrorMessage("Não foi possível se conectar ao servidor");
       } else {

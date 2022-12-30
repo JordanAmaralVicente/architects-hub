@@ -19,5 +19,5 @@ export const createUserValidation = Joi.object({
   telephone: Joi.string(),
   age: Joi.number().positive(),
   gender: Joi.string(),
-  useRole: Joi.string(),
+  userRole: Joi.string(),
 });
