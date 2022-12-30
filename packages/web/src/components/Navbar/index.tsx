@@ -2,7 +2,7 @@ import { Box, Button, styled } from "@mui/material";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
-const OuterContainer = styled(Box)(() => ({
+const OuterContainer = styled(Box)(({ theme }) => ({
   width: "100%",
   background: "linear-gradient(90deg, #0059B2, #007FFF 120%)",
   color: "white",
@@ -10,9 +10,14 @@ const OuterContainer = styled(Box)(() => ({
   alignItems: "center",
   justifyContent: "space-between",
   display: "flex",
+
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "12px",
+    justifyContent: "center",
+  },
 }));
 
-const CustomNavbarButton = styled(Button)(() => ({
+const CustomNavbarButton = styled(Button)(({ theme }) => ({
   color: "white",
   fontWeight: "bold",
   margin: "0 8px",
@@ -20,6 +25,13 @@ const CustomNavbarButton = styled(Button)(() => ({
   "&:hover": {
     backgroundColor: "white",
     color: "#0059B2",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "12px",
+    justifyContent: "center",
+    margin: 0,
+    lineHeight: "14px",
   },
 }));
 
