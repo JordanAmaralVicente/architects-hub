@@ -17,4 +17,10 @@ export class UsersController {
   createUser(@Body() createUserDto: CreateUserDTO) {
     return this.usersService.createUser(createUserDto);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/architects')
+  listArchitects() {
+    return this.usersService.listArchitects();
+  }
 }

@@ -1,14 +1,24 @@
-import { ReactNode } from "react";
-import { AuthProvider } from "./contexts/auth";
+import { SnackbarProvider } from "notistack";
+import React from "react";
 
 interface AppProps {
-  children?: ReactNode;
+  children?: React.ReactNode;
 }
 
 function App(props: AppProps) {
   const { children } = props;
 
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <SnackbarProvider
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      autoHideDuration={2000}
+    >
+      {children}
+    </SnackbarProvider>
+  );
 }
 
 export default App;

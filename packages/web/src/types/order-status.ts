@@ -18,3 +18,9 @@ export const OrderStatuses = [
     label: "Solicitado",
   },
 ];
+
+export const OrderStatusesMap = new Map<OrderStatus, string>([
+  [OrderStatus.ACCEPTED, "Aceito"],
+  [OrderStatus.REFUSED, "Recusado"],
+  [OrderStatus.SOLICITED, "Solicitado"],
+]);
